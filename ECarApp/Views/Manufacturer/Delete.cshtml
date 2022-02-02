@@ -1,0 +1,58 @@
+﻿@model ECarApp.Models.Manufacturer
+
+<form method="post" asp-action="Delete">
+    <input asp-for="Id" hidden />
+    <div class="broder pb-3 pt-3">
+        <div class="form-group row">
+            <h2>Delete Manufacturer</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-8">
+            <div class="form-group row p-1">
+                <div class="col-4">
+                    <label asp-for="Name"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Name" class="form-control" readonly/>
+                </div>
+            </div>
+            <div class="form-group row p-1">
+                <div class="col-4">
+                    <label asp-for="City"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="City" class="form-control" readonly/>
+                </div>
+            </div>
+            <div class="form-group row p-1">
+                <div class="col-4">
+                    <label asp-for="Country"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Country" class="form-control" readonly/>
+                </div>
+            </div>
+            <div class="form-group row p-1">
+                <div class="col-4">
+                    <label asp-for="YearFounded"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="YearFounded" class="form-control" readonly/>
+                </div>
+            </div>
+
+            <div class="form-group row p-1">
+                <div class="col-8 offset-4 row">
+                    <div class="col">
+                        <input type="submit" class="btn btn-danger w-100" value="Delete" />
+                    </div>
+                    <div class="col">
+                        <a asp-action="Index" class="btn btn-success w-100">Back</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>
