@@ -6,6 +6,7 @@ using System.Collections.Generic;
 
 namespace ECarApp.Controllers
 {
+    [Area("Admin")]
     public class ConditionController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

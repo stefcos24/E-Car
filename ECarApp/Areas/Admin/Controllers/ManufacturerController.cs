@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ECarApp.Controllers
 {
+    [Area("Admin")]
     public class ManufacturerController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

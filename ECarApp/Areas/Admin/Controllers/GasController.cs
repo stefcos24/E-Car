@@ -6,19 +6,20 @@ using System.Collections.Generic;
 
 namespace ECarApp.Controllers
 {
-    public class LocationController : Controller
+    [Area("Admin")]
+    public class GasController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public LocationController(IUnitOfWork unitOfWork)
+        public GasController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
         public IActionResult Index()
         {
-            IEnumerable<Location> objLocationlist = _unitOfWork.Location.GetAll();
-            return View(objLocationlist);
+            IEnumerable<Gas> objGasList = _unitOfWork.Gas.GetAll();
+            return View(objGasList);
         }
 
         //GET
@@ -30,18 +31,18 @@ namespace ECarApp.Controllers
         //POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Location obj)
+        public IActionResult Create(Gas obj)
         {
-            if(obj.CarLocation == obj.Id.ToString())
+            if(obj.TypeOfGas == obj.Id.ToString())
             {
-                ModelState.AddModelError("CustomError", "The Car Location cannot be same as ID!");
+                ModelState.AddModelError("CustomError", "The Type of Gas cannot be same as ID!");
             }
 
             if(ModelState.IsValid)
             {
-                _unitOfWork.Location.Add(obj);
+                _unitOfWork.Gas.Add(obj);
                 _unitOfWork.Save();
-                TempData["success"] = "Car Location created succesfully!";
+                TempData["success"] = "Gas created succesfully!";
 
                 return RedirectToAction("Index");
             }
@@ -57,31 +58,31 @@ namespace ECarApp.Controllers
                 return NotFound();
             }
             
-            var locationFromDb = _unitOfWork.Location.GetFirstOrDefault(u => u.Id == id);
+            var gasFromDb = _unitOfWork.Gas.GetFirstOrDefault(u => u.Id == id);
 
-            if(locationFromDb == null)
+            if(gasFromDb == null)
             {
                 return NotFound();
             }
 
-            return View(locationFromDb);
+            return View(gasFromDb);
         }
 
         //POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Location obj)
+        public IActionResult Edit(Gas obj)
         {
-            if(obj.CarLocation == obj.Id.ToString())
+            if(obj.TypeOfGas == obj.Id.ToString())
             {
-                ModelState.AddModelError("CustomError", "Car Location cannot be same as ID!");
+                ModelState.AddModelError("CustomError", "Type of Gas cannot be same as ID!");
             }
 
             if(ModelState.IsValid)
             {
-                _unitOfWork.Location.Update(obj);
+                _unitOfWork.Gas.Update(obj);
                 _unitOfWork.Save();
-                TempData["success"] = "Car Locations updated succesfully!";
+                TempData["success"] = "Gas updated succesfully!";
 
                 return RedirectToAction("Index");
             }
@@ -91,14 +92,14 @@ namespace ECarApp.Controllers
         //GET
         public IActionResult Delete(int? id)
         {
-            var locationFromDb = _unitOfWork.Location.GetFirstOrDefault(u => u.Id == id);
+            var gasFromDb = _unitOfWork.Gas.GetFirstOrDefault(u => u.Id == id);
 
-            if(locationFromDb == null)
+            if(gasFromDb == null)
             {
                 return NotFound();
             }
 
-            return View(locationFromDb);
+            return View(gasFromDb);
         }
 
         //POST
@@ -107,16 +108,16 @@ namespace ECarApp.Controllers
         [ActionName("Delete")]
         public IActionResult DeletePost(int? id)
         {
-            var locationFromDb = _unitOfWork.Location.GetFirstOrDefault(u => u.Id == id);
+            var gasFromDb = _unitOfWork.Gas.GetFirstOrDefault(u => u.Id == id);
 
-            if (locationFromDb == null)
+            if (gasFromDb == null)
             {
                 return NotFound();
             }
 
-            _unitOfWork.Location.Remove(locationFromDb);
+            _unitOfWork.Gas.Remove(gasFromDb);
             _unitOfWork.Save();
-            TempData["success"] = "Car Location deleted succesfully!";
+            TempData["success"] = "Gas deleted succesfully!";
 
             return RedirectToAction("Index");
         }
