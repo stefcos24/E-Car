@@ -1,19 +1,20 @@
-﻿using ECarApp.Data;
-using ECarApp.Models;
+﻿using ECar.DataAccess;
+using ECar.DataAccess.Repository.IRepository;
+using ECar.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECarApp.Controllers
 {
     public class ManufacturerController : Controller
     {
-        private readonly ApplicationDbContext _db;
-        public ManufacturerController(ApplicationDbContext db)
+        private readonly IUnitOfWork _unitOfWork;
+        public ManufacturerController(IUnitOfWork unitOfWork)
         {
-            _db = db;
+            _unitOfWork = unitOfWork;
         }
         public IActionResult Index()
         {
-            IEnumerable<Manufacturer> objManufacturerList = _db.Manufacturers;
+            IEnumerable<Manufacturer> objManufacturerList = _unitOfWork.Manufacturer.GetAll();
             return View(objManufacturerList);
         }
 
@@ -33,8 +34,8 @@ namespace ECarApp.Controllers
 
             if(ModelState.IsValid)
             {
-                _db.Manufacturers.Add(obj);
-                _db.SaveChanges();
+                _unitOfWork.Manufacturer.Add(obj);
+                _unitOfWork.Save();
                 TempData["success"] = "Manufacturer Created Succesfully!";
 
                 return RedirectToAction("Index");
@@ -50,7 +51,7 @@ namespace ECarApp.Controllers
                 return NotFound();
             }
 
-            var manufacturerFromDb = _db.Manufacturers.FirstOrDefault(u => u.Id == id);
+            var manufacturerFromDb = _unitOfWork.Manufacturer.GetFirstOrDefault(u => u.Id == id);
 
             if (manufacturerFromDb == null)
             {
@@ -71,8 +72,8 @@ namespace ECarApp.Controllers
 
             if(ModelState.IsValid)
             {
-                _db.Manufacturers.Update(obj);
-                _db.SaveChanges();
+                _unitOfWork.Manufacturer.Update(obj);
+                _unitOfWork.Save();
                 TempData["success"] = "Manufacturer Updated Succesfully!";
 
                 return RedirectToAction("Index");
@@ -87,7 +88,7 @@ namespace ECarApp.Controllers
             {
                 return NotFound();
             }
-            var manufacturerFromDb = _db.Manufacturers.Find(id);
+            var manufacturerFromDb = _unitOfWork.Manufacturer.GetFirstOrDefault(u => u.Id == id);
 
             if(manufacturerFromDb == null)
             {
@@ -106,15 +107,15 @@ namespace ECarApp.Controllers
             {
                 return NotFound();
             }
-            var manufacturerFromDb = _db.Manufacturers.Find(id);
+            var manufacturerFromDb = _unitOfWork.Manufacturer.GetFirstOrDefault(u => u.Id == id);
 
             if (manufacturerFromDb == null)
             {
                 return NotFound();
             }
 
-            _db.Manufacturers.Remove(manufacturerFromDb);
-            _db.SaveChanges();
+            _unitOfWork.Manufacturer.Remove(manufacturerFromDb);
+            _unitOfWork.Save();
             TempData["success"] = "Manufacturer Deleted Succesfully!";
 
             return RedirectToAction("Index");

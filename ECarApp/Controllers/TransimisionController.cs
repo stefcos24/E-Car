@@ -1,5 +1,6 @@
-﻿using ECarApp.Data;
-using ECarApp.Models;
+﻿using ECar.DataAccess;
+using ECar.DataAccess.Repository.IRepository;
+using ECar.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
@@ -7,16 +8,16 @@ namespace ECarApp.Controllers
 {
     public class TransimisionController : Controller
     {
-        private readonly ApplicationDbContext _db;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public TransimisionController(ApplicationDbContext db)
+        public TransimisionController(IUnitOfWork unitOfWork)
         {
-            _db = db;
+            _unitOfWork = unitOfWork;
         }
 
         public IActionResult Index()
         {
-            IEnumerable<Transimision> objTransimisionList = _db.Transimisions;
+            IEnumerable<Transimision> objTransimisionList = _unitOfWork.Transimision.GetAll();
             return View(objTransimisionList);
         }
 
@@ -38,8 +39,8 @@ namespace ECarApp.Controllers
 
             if(ModelState.IsValid)
             {
-                _db.Transimisions.Add(obj);
-                _db.SaveChanges();
+                _unitOfWork.Transimision.Add(obj);
+                _unitOfWork.Save();
                 TempData["success"] = "The Transimision Type created succesfully!";
 
                 return RedirectToAction("Index");
@@ -56,7 +57,7 @@ namespace ECarApp.Controllers
                 return NotFound();
             }
             
-            var transimisionFromDb = _db.Transimisions.FirstOrDefault(u => u.Id == id);
+            var transimisionFromDb = _unitOfWork.Transimision.GetFirstOrDefault(u => u.Id == id);
 
             if(transimisionFromDb == null)
             {
@@ -78,8 +79,8 @@ namespace ECarApp.Controllers
 
             if(ModelState.IsValid)
             {
-                _db.Transimisions.Update(obj);
-                _db.SaveChanges();
+                _unitOfWork.Transimision.Update(obj);
+                _unitOfWork.Save();
                 TempData["success"] = "The Transimision Type updated succesfully!";
 
                 return RedirectToAction("Index");
@@ -90,7 +91,7 @@ namespace ECarApp.Controllers
         //GET
         public IActionResult Delete(int? id)
         {
-            var transimisionFromDb = _db.Transimisions.Find(id);
+            var transimisionFromDb = _unitOfWork.Transimision.GetFirstOrDefault(u => u.Id == id);
 
             if(transimisionFromDb == null)
             {
@@ -106,15 +107,15 @@ namespace ECarApp.Controllers
         [ActionName("Delete")]
         public IActionResult DeletePost(int? id)
         {
-            var transimisionFromDb = _db.Transimisions.Find(id);
+            var transimisionFromDb = _unitOfWork.Transimision.GetFirstOrDefault(u => u.Id == id);
 
-            if(transimisionFromDb == null)
+            if (transimisionFromDb == null)
             {
                 return NotFound();
             }
 
-            _db.Transimisions.Remove(transimisionFromDb);
-            _db.SaveChanges();
+            _unitOfWork.Transimision.Remove(transimisionFromDb);
+            _unitOfWork.Save();
             TempData["success"] = "The Transimision Type deleted succesfully!";
 
             return RedirectToAction("Index");

@@ -1,5 +1,6 @@
-﻿using ECarApp.Data;
-using ECarApp.Models;
+﻿using ECar.DataAccess;
+using ECar.DataAccess.Repository.IRepository;
+using ECar.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
@@ -7,16 +8,16 @@ namespace ECarApp.Controllers
 {
     public class LocationController : Controller
     {
-        private readonly ApplicationDbContext _db;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public LocationController(ApplicationDbContext db)
+        public LocationController(IUnitOfWork unitOfWork)
         {
-            _db = db;
+            _unitOfWork = unitOfWork;
         }
 
         public IActionResult Index()
         {
-            IEnumerable<Location> objLocationlist = _db.Locations;
+            IEnumerable<Location> objLocationlist = _unitOfWork.Location.GetAll();
             return View(objLocationlist);
         }
 
@@ -38,8 +39,8 @@ namespace ECarApp.Controllers
 
             if(ModelState.IsValid)
             {
-                _db.Locations.Add(obj);
-                _db.SaveChanges();
+                _unitOfWork.Location.Add(obj);
+                _unitOfWork.Save();
                 TempData["success"] = "Car Location created succesfully!";
 
                 return RedirectToAction("Index");
@@ -56,7 +57,7 @@ namespace ECarApp.Controllers
                 return NotFound();
             }
             
-            var locationFromDb = _db.Locations.FirstOrDefault(u => u.Id == id);
+            var locationFromDb = _unitOfWork.Location.GetFirstOrDefault(u => u.Id == id);
 
             if(locationFromDb == null)
             {
@@ -78,8 +79,8 @@ namespace ECarApp.Controllers
 
             if(ModelState.IsValid)
             {
-                _db.Locations.Update(obj);
-                _db.SaveChanges();
+                _unitOfWork.Location.Update(obj);
+                _unitOfWork.Save();
                 TempData["success"] = "Car Locations updated succesfully!";
 
                 return RedirectToAction("Index");
@@ -90,7 +91,7 @@ namespace ECarApp.Controllers
         //GET
         public IActionResult Delete(int? id)
         {
-            var locationFromDb = _db.Locations.Find(id);
+            var locationFromDb = _unitOfWork.Location.GetFirstOrDefault(u => u.Id == id);
 
             if(locationFromDb == null)
             {
@@ -106,15 +107,15 @@ namespace ECarApp.Controllers
         [ActionName("Delete")]
         public IActionResult DeletePost(int? id)
         {
-            var locationFromDb = _db.Locations.Find(id);
+            var locationFromDb = _unitOfWork.Location.GetFirstOrDefault(u => u.Id == id);
 
-            if(locationFromDb == null)
+            if (locationFromDb == null)
             {
                 return NotFound();
             }
 
-            _db.Locations.Remove(locationFromDb);
-            _db.SaveChanges();
+            _unitOfWork.Location.Remove(locationFromDb);
+            _unitOfWork.Save();
             TempData["success"] = "Car Location deleted succesfully!";
 
             return RedirectToAction("Index");

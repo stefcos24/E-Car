@@ -1,5 +1,6 @@
-﻿using ECarApp.Data;
-using ECarApp.Models;
+﻿using ECar.DataAccess;
+using ECar.DataAccess.Repository.IRepository;
+using ECar.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
@@ -7,16 +8,16 @@ namespace ECarApp.Controllers
 {
     public class GasController : Controller
     {
-        private readonly ApplicationDbContext _db;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public GasController(ApplicationDbContext db)
+        public GasController(IUnitOfWork unitOfWork)
         {
-            _db = db;
+            _unitOfWork = unitOfWork;
         }
 
         public IActionResult Index()
         {
-            IEnumerable<Gas> objGasList = _db.Gas;
+            IEnumerable<Gas> objGasList = _unitOfWork.Gas.GetAll();
             return View(objGasList);
         }
 
@@ -38,8 +39,8 @@ namespace ECarApp.Controllers
 
             if(ModelState.IsValid)
             {
-                _db.Gas.Add(obj);
-                _db.SaveChanges();
+                _unitOfWork.Gas.Add(obj);
+                _unitOfWork.Save();
                 TempData["success"] = "Gas created succesfully!";
 
                 return RedirectToAction("Index");
@@ -56,7 +57,7 @@ namespace ECarApp.Controllers
                 return NotFound();
             }
             
-            var gasFromDb = _db.Gas.FirstOrDefault(u => u.Id == id);
+            var gasFromDb = _unitOfWork.Gas.GetFirstOrDefault(u => u.Id == id);
 
             if(gasFromDb == null)
             {
@@ -78,8 +79,8 @@ namespace ECarApp.Controllers
 
             if(ModelState.IsValid)
             {
-                _db.Gas.Update(obj);
-                _db.SaveChanges();
+                _unitOfWork.Gas.Update(obj);
+                _unitOfWork.Save();
                 TempData["success"] = "Gas updated succesfully!";
 
                 return RedirectToAction("Index");
@@ -90,7 +91,7 @@ namespace ECarApp.Controllers
         //GET
         public IActionResult Delete(int? id)
         {
-            var gasFromDb = _db.Gas.Find(id);
+            var gasFromDb = _unitOfWork.Gas.GetFirstOrDefault(u => u.Id == id);
 
             if(gasFromDb == null)
             {
@@ -106,15 +107,15 @@ namespace ECarApp.Controllers
         [ActionName("Delete")]
         public IActionResult DeletePost(int? id)
         {
-            var gasFromDb = _db.Gas.Find(id);
+            var gasFromDb = _unitOfWork.Gas.GetFirstOrDefault(u => u.Id == id);
 
-            if(gasFromDb == null)
+            if (gasFromDb == null)
             {
                 return NotFound();
             }
 
-            _db.Gas.Remove(gasFromDb);
-            _db.SaveChanges();
+            _unitOfWork.Gas.Remove(gasFromDb);
+            _unitOfWork.Save();
             TempData["success"] = "Gas deleted succesfully!";
 
             return RedirectToAction("Index");

@@ -1,5 +1,6 @@
-﻿using ECarApp.Data;
-using ECarApp.Models;
+﻿using ECar.DataAccess;
+using ECar.DataAccess.Repository.IRepository;
+using ECar.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
@@ -7,16 +8,16 @@ namespace ECarApp.Controllers
 {
     public class ConditionController : Controller
     {
-        private readonly ApplicationDbContext _db;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public ConditionController(ApplicationDbContext db)
+        public ConditionController(IUnitOfWork unitOfWork)
         {
-            _db = db;
+            _unitOfWork = unitOfWork;
         }
 
         public IActionResult Index()
         {
-            IEnumerable<Condition> objConditionList = _db.Conditions;
+            IEnumerable<Condition> objConditionList = _unitOfWork.Condition.GetAll();
             return View(objConditionList);
         }
 
@@ -38,8 +39,8 @@ namespace ECarApp.Controllers
 
             if(ModelState.IsValid)
             {
-                _db.Conditions.Add(obj);
-                _db.SaveChanges();
+                _unitOfWork.Condition.Add(obj);
+                _unitOfWork.Save();
                 TempData["success"] = "Car Condition created succesfully!";
 
                 return RedirectToAction("Index");
@@ -56,7 +57,7 @@ namespace ECarApp.Controllers
                 return NotFound();
             }
             
-            var conditionFromDb = _db.Conditions.FirstOrDefault(u => u.Id == id);
+            var conditionFromDb = _unitOfWork.Condition.GetFirstOrDefault(u => u.Id == id);
 
             if(conditionFromDb == null)
             {
@@ -78,8 +79,8 @@ namespace ECarApp.Controllers
 
             if(ModelState.IsValid)
             {
-                _db.Conditions.Update(obj);
-                _db.SaveChanges();
+                _unitOfWork.Condition.Update(obj);
+                _unitOfWork.Save();
                 TempData["success"] = "Car Condition updated succesfully!";
 
                 return RedirectToAction("Index");
@@ -90,7 +91,7 @@ namespace ECarApp.Controllers
         //GET
         public IActionResult Delete(int? id)
         {
-            var conditionFromDb = _db.Conditions.Find(id);
+            var conditionFromDb = _unitOfWork.Condition.GetFirstOrDefault(u => u.Id == id);
 
             if(conditionFromDb == null)
             {
@@ -106,15 +107,15 @@ namespace ECarApp.Controllers
         [ActionName("Delete")]
         public IActionResult DeletePost(int? id)
         {
-            var conditionFromDb = _db.Conditions.Find(id);
+            var conditionFromDb = _unitOfWork.Condition.GetFirstOrDefault(u => u.Id == id);
 
-            if(conditionFromDb == null)
+            if (conditionFromDb == null)
             {
                 return NotFound();
             }
 
-            _db.Conditions.Remove(conditionFromDb);
-            _db.SaveChanges();
+            _unitOfWork.Condition.Remove(conditionFromDb);
+            _unitOfWork.Save();
             TempData["success"] = "Car Condition deleted succesfully!";
 
             return RedirectToAction("Index");

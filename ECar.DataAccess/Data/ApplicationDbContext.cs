@@ -1,7 +1,7 @@
-﻿using ECarApp.Models;
+﻿using ECar.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace ECarApp.Data
+namespace ECar.DataAccess
 {
     public class ApplicationDbContext : DbContext
     {

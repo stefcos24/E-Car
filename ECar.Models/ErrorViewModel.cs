@@ -1,4 +1,4 @@
-namespace ECarApp.Models
+namespace ECar.Models
 {
     public class ErrorViewModel
     {
