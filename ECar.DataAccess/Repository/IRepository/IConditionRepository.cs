@@ -10,6 +10,5 @@ namespace ECar.DataAccess.Repository.IRepository
     public interface IConditionRepository : IRepository<Condition>
     {
         void Update(Condition obj);
-        void Save();
     }
 }

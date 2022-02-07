@@ -19,12 +19,14 @@ namespace ECar.DataAccess.Repository
             Location = new LocationRepository(_db);
             Manufacturer = new ManufacturerRepository(_db);
             Transimision = new TransimisionRepository(_db);
+            Product = new ProductRepository(_db);
         }
         public IConditionRepository Condition { get; private set; }
         public IGasRepository Gas { get; private set; }
         public ILocationRepository Location { get; private set; }
         public IManufacturerRepository Manufacturer { get; private set; }
         public ITransimisionRepository Transimision { get; private set; }
+        public IProductRepository Product { get; private set; }
 
         public void Save()
         {

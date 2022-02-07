@@ -1,0 +1,167 @@
+﻿@model ECar.Models.ViewModels.ProductVM
+
+<form method="post" asp-action="Upsert" enctype="multipart/form-data">
+    <input asp-for="Product.Id" hidden />
+    <input asp-for="Product.ImageUrl" hidden />
+    <div class="broder pb-3 pt-3">
+        <div class="form-group row">
+            <h2 class="text-primary">@(Model.Product.Id!=0?"Update": "Create")  Product</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-8">
+            <div class="form-group row p-1">
+                <div class="col-4">
+                    <label asp-for="Product.Name"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Product.Name" class="form-control" />
+                    <span asp-validation-for="Product.Name" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row p-1">
+                <div class="col-4">
+                    <label asp-for="Product.ManufacturerId"></label>
+                </div>
+                <div class="col-8">
+                    <select asp-for="Product.ManufacturerId" asp-items="@Model.ManufacturerList" class="form-control">
+                        <option disabled selected>--Select Manufacturer--</option>
+                    </select>
+                    <span asp-validation-for="Product.ManufacturerId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row p-1">
+                <div class="col-4">
+                    <label asp-for="Product.ConditionId"></label>
+                </div>
+                <div class="col-8">
+                    <select asp-for="Product.ConditionId" asp-items="@Model.ConditionList" class="form-control">
+                        <option disabled selected>--Select Car Condition--</option>
+                    </select>
+                    <span asp-validation-for="Product.ConditionId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row p-1">
+                <div class="col-4">
+                    <label asp-for="Product.LocationId"></label>
+                </div>
+                <div class="col-8">
+                    <select asp-for="Product.LocationId" asp-items="@Model.LocationList" class="form-control">
+                        <option disabled selected>--Select Location--</option>
+                    </select>
+                    <span asp-validation-for="Product.LocationId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row p-1">
+                <div class="col-4">
+                    <label asp-for="Product.Year"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Product.Year" class="form-control" />
+                    <span asp-validation-for="Product.Year" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row p-1">
+                <div class="col-4">
+                    <label asp-for="Product.Mileage"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Product.Mileage" class="form-control" />
+                    <span asp-validation-for="Product.Mileage" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row p-1">
+                <div class="col-4">
+                    <label asp-for="Product.Kilowatt"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Product.Kilowatt" class="form-control" />
+                    <span asp-validation-for="Product.Kilowatt" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row p-1">
+                <div class="col-4">
+                    <label asp-for="Product.GasId"></label>
+                </div>
+                <div class="col-8">
+                    <select asp-for="Product.GasId" asp-items="@Model.GasList" class="form-control">
+                        <option disabled selected>--Select Gas--</option>
+                    </select>
+                    <span asp-validation-for="Product.GasId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row p-1">
+                <div class="col-4">
+                    <label asp-for="Product.TransimisionId"></label>
+                </div>
+                <div class="col-8">
+                    <select asp-for="Product.TransimisionId" asp-items="@Model.TransimisionList" class="form-control">
+                        <option disabled selected>--Select Type of Transimision--</option>
+                    </select>
+                    <span asp-validation-for="Product.TransimisionId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row p-1">
+                <div class="col-4">
+                    <label asp-for="Product.Description"></label>
+                </div>
+                <div class="col-8">
+                    <textarea asp-for="Product.Description" class="form-control" rows="4"></textarea>
+                    <span asp-validation-for="Product.Description" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row p-1">
+                <div class="col-4">
+                    <label asp-for="Product.ImageUrl"></label>
+                </div>
+                <div class="col-8">
+                    <input type="file" name="file" id="uploadBox" asp-for="Product.ImageUrl" class="form-control" />
+                    <span asp-validation-for="Product.ImageUrl" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row p-1">
+                <div class="col-8 offset-4 row">
+                    <div class="col">
+                        @if(Model.Product.Id != 0)
+                        {
+                            <input type="submit" class="btn btn-info w-100" value="Update" />
+                        }
+                        else
+                        {
+                            <input type="submit" onclick="return ValidateInput()" class="btn btn-info w-100" value="Create" />
+                        }
+                    </div>
+                    <div class="col">
+                        <a asp-action="Index" class="btn btn-success w-100">Back</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+	@{
+	<partial name="_ValidationScriptsPartial" />
+	}
+<script>
+tinymce.init({
+      selector: 'textarea',
+      plugins: 'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+      toolbar_mode: 'floating',
+   });
+  	function ValidateInput(){
+		if(document.getElementById("uploadBox").value==""){
+			Swal.fire({
+			  icon: 'error',
+			  title: 'Oops...',
+			  text: 'Please upload an Image!',
+			});
+			return false;
+		}
+		return true;
+	}
+</script>
+}

@@ -13,6 +13,7 @@ namespace ECar.DataAccess.Repository.IRepository
         ILocationRepository Location { get; }
         IManufacturerRepository Manufacturer { get; }
         ITransimisionRepository Transimision { get; }
+        IProductRepository Product { get; }
 
         void Save();
     }

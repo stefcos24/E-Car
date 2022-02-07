@@ -10,6 +10,5 @@ namespace ECar.DataAccess.Repository.IRepository
     public interface ILocationRepository : IRepository<Location>
     {
         void Update(Location obj);
-        void Save();
     }
 }

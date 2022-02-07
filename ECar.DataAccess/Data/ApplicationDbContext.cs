@@ -15,5 +15,6 @@ namespace ECar.DataAccess
         public DbSet<Gas> Gas { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<Transimision> Transimisions { get; set; }
+        public DbSet<Product> Products { get; set; }
     }
 }

@@ -10,6 +10,5 @@ namespace ECar.DataAccess.Repository.IRepository
     public interface IGasRepository : IRepository<Gas>
     {
         void Update(Gas obj);
-        void Save();
     }
 }

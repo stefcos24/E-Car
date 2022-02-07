@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace ECar.DataAccess.Repository.IRepository
 {
-    public interface ITransimisionRepository : IRepository<Transimision>
+    public interface IProductRepository : IRepository<Product>
     {
-        void Update(Transimision obj);
+        void Update(Product obj);
     }
 }

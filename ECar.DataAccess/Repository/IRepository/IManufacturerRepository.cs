@@ -10,6 +10,5 @@ namespace ECar.DataAccess.Repository.IRepository
     public interface IManufacturerRepository : IRepository<Manufacturer>
     {
         void Update(Manufacturer obj);
-        void Save();
     }
 }

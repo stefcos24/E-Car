@@ -17,11 +17,6 @@ namespace ECar.DataAccess.Repository
             _db = db;
         }
 
-        public void Save()
-        {
-            _db.SaveChanges();
-        }
-
         public void Update(Transimision obj)
         {
             _db.Transimisions.Update(obj);
