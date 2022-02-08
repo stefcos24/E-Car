@@ -1,0 +1,79 @@
+﻿@model ShoppingCarts
+
+<form method="post">
+        <div class="card container">
+            <div class="card-header bg-dark text-light ml-0  row ">
+                <div class="col-12 col-md-8">
+                    <h1 class="text-white-50">@Model.Product.Name</h1>
+                    <p class="text-warning">made by @Model.Product.Manufacturer.Name</p>
+                </div>
+                <div class="col-12 col-md-4 text-end pt-4">
+                    <span class="badge bg-info pt-2" style="height:30px;">@Model.Product.Gas.TypeOfGas</span>
+                    <span class="badge bg-warning pt-2" style="height:30px;">@Model.Product.Transimision.TransimisionType</span>
+                </div>
+            </div>
+            <div class="card-body row container">
+                <div class="container rounded p-2">
+                    <div class="row">
+                        <div class="col-8 col-lg-8">
+
+                            <div class="row pl-2">
+                                <h5 class="text-muted">Location : @Model.Product.Location.CarLocation</h5>
+                            </div>
+                            <div class="row pl-2">
+                                <h5 class="text-muted pb-2">Condition: @Model.Product.Condition.CarCondition</h5>
+                            </div>
+                            <div class="row text-center pl-2">
+                                <div class="p-1 col-2 bg-secondary border-bottom">
+                                    <div>Specification</div>
+                                </div>
+                                <div class="p-1 col-2 bg-secondary border-bottom">
+                                    <div>Mileage</div>
+                                </div>
+                                <div class="p-1 col-2 bg-secondary border-bottom">
+                                    <div>Kilowatt</div>
+                                </div>
+                                <div class="p-1 col-2 bg-secondary border-bottom">
+                                    <div>Year</div>
+                                </div>
+                            </div>
+                            <div class="row text-center pl-2" style="color:maroon; font-weight:bold">
+                                <div class="p-1 col-2 bg-secondary">
+                                    <div></div>
+                                </div>
+                                <div class="p-1 col-2 bg-secondary">
+                                    <div>@Model.Product.Mileage</div>
+                                </div>
+                                <div class="p-1 col-2 bg-secondary">
+                                    <div>@Model.Product.Kilowatt</div>
+                                </div>
+                                <div class="p-1 col-2 bg-secondary">
+                                    <div>@Model.Product.Year</div>
+                                </div>
+                            </div>
+                            <div class="row pl-2">
+                                <p class="text-secondary">@Html.Raw(@Model.Product.Description)</p>
+                            </div>
+                            <div class="row pl-2">
+                                <div class="col-2 text-primary"><h4>Price: </h4></div>
+                                <div class="col-10 text-primary"><h4>@Model.Product.Price.ToString("0.00") €</h4></div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-3 offset-lg-1 text-center">
+                            <img src="@Model.Product.ImageUrl" width="100%" class="rounded" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-12 col-md-6 pb-1">
+                        <a asp-action="Index" asp-controller="Home" class="btn btn-success form-control " style="height:50px;">Back to List</a>
+                    </div>
+                    <div class="col-12 col-md-6 pb-1">
+                        <button type="submit" value="Add to Cart" class="btn btn-primary form-control" style="height:50px;">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+</form>

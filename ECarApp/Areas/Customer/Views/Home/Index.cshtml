@@ -1,10 +1,35 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model IEnumerable<ECar.Models.Product>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+<div class="row pb-3">
+    @foreach(var product in Model)
+    {
+        <div class="col-lg-3 col-md-6">
+            <div class="row p-2">
+                <div class="col-12 p-1" style="border:1px solid #fff; border-radius:5px;">
+                    <div class="card">
+                        <p class="card-header h5 text-white-50 bg-dark px-3" style="border-radius:5px 5px 0 0">@product.Name</p>
+                        <div class="card-body">
+                        <div class="pl-1">
+                            <img src="@product.ImageUrl" class="card-img-top rounded" style="width:270px; height:180px;" />
+                            <p class="card-title text-warning">by <b>@product.Manufacturer.Name</b></p>
+                        </div>
+                        <div class="pl-1">
+                            <p>Location: <b>@product.Location.CarLocation</b></p>
+                        </div>
+                        <div class="pl-1">
+                            <p>Condition: <b>@product.Condition.CarCondition</b></p>
+                        </div>
+                        <div class="pl-1">
+                            <p style="color:maroon; font-size:18px;">Price: <b>@product.Price.ToString("0.00") €</b></p>
+                        </div>
+                        </div>
+                    </div>
+                    <a asp-action="Details" class="btn btn-primary form-control mt-1" asp-route-id="@product.Id">
+                        Details
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
 </div>
-
-<h1>OVO JE TEST ZA GIT!</h1>

@@ -16,6 +16,7 @@ function loadDataTable() {
             { "data": "mileage", "width": "10%" },
             { "data": "condition.carCondition", "width": "10%" },
             { "data": "location.carLocation", "width": "15%" },
+            { "data": "price", "width": "15%" },
             {
                 "data": "id",
                 "render": function (data) {

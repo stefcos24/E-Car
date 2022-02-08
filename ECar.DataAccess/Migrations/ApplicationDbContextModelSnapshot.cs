@@ -142,6 +142,9 @@ namespace ECarApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
                     b.Property<int>("TransimisionId")
                         .HasColumnType("int");
 
@@ -161,6 +164,27 @@ namespace ECarApp.Migrations
                     b.HasIndex("TransimisionId");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("ECar.Models.ShoppingCart", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ShoppingCarts");
                 });
 
             modelBuilder.Entity("ECar.Models.Transimision", b =>
@@ -221,6 +245,17 @@ namespace ECarApp.Migrations
                     b.Navigation("Manufacturer");
 
                     b.Navigation("Transimision");
+                });
+
+            modelBuilder.Entity("ECar.Models.ShoppingCart", b =>
+                {
+                    b.HasOne("ECar.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
                 });
 #pragma warning restore 612, 618
         }

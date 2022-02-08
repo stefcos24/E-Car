@@ -112,6 +112,15 @@
             </div>
             <div class="form-group row p-1">
                 <div class="col-4">
+                    <label asp-for="Product.Price"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Product.Price" class="form-control" />
+                    <span asp-validation-for="Product.Price" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row p-1">
+                <div class="col-4">
                     <label asp-for="Product.ImageUrl"></label>
                 </div>
                 <div class="col-8">

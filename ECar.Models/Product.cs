@@ -71,6 +71,9 @@ namespace ECar.Models
 
         [ValidateNever]
         public string ImageUrl { get; set; }
+        [Required]
+        public double Price { get; set; }
+
 
 
     }
